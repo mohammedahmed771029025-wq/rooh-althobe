@@ -52,28 +52,21 @@ function updateOrderStatus(orderId, status, errorInfo = null) {
   }
 }
 
-// إعداد خدمة البريد عبر Gmail مع تفعيل Pool لتسريع الإرسال الفوري وإبقاء الاتصال مجهزاً
+// إعداد خدمة البريد عبر Gmail
 const transporter = nodemailer.createTransport({
   service: 'gmail',
-  pool: true,              // تفعيل مجمع الاتصالات لإبقاء الاتصال مجهزاً وسريعاً جداً
-  maxConnections: 3,       // عدد الاتصالات المتزامنة
-  maxMessages: 100,        // عدد الرسائل قبل تجديد الاتصال
-  rateLimit: 5,            // حد أقصى للرسائل في الثانية
   auth: {
     user: EMAIL_USER,
     pass: EMAIL_PASS // App Password الخاص بحسابك
-  },
-  connectionTimeout: 10000, // مهلة 10 ثوانٍ كحد أقصى للاتصال
-  greetingTimeout: 10000,
-  socketTimeout: 15000
+  }
 });
 
-// التحقق من صحة الاتصال بـ Gmail عند بدء التشغيل وتجهيز الـ Pool
+// التحقق من صحة الاتصال بـ Gmail عند بدء التشغيل
 transporter.verify((error, success) => {
   if (error) {
     console.error('❌ تنبيه: خطأ في الاتصال بحساب Gmail:', error.message);
   } else {
-    console.log('✅ تم الاتصال بحساب Gmail بنجاح وتجهيز الاتصال السريع! جاهز لاستقبال الطلبات.');
+    console.log('✅ تم الاتصال بحساب Gmail بنجاح! جاهز لاستقبال الطلبات.');
   }
 });
 
@@ -365,43 +358,40 @@ const server = http.createServer((req, res) => {
           message: 'تم استلام طلبك بنجاح وسيتواصل معك فريقنا قريباً!' 
         }));
 
-        // 3. إرسال البريدين (للإدارة وللعميل) في الخلفية دون تعطيل أو تعليق العميل
+        // 3. إرسال البريدين (للإدارة وللعميل) بالتسلسل في الخلفية لضمان عدم حدوث تضارب
         (async () => {
+          let adminSent = false;
+          let customerSent = false;
+
+          // أولاً: إرسال بريد إدارة المتجر
           try {
-            const emailTasks = [
-              transporter.sendMail(adminMailOptions).then(() => {
-                console.log(`📧 تم إرسال إشعار الطلب لإدارة المتجر: shirtclothes5@gmail.com`);
-                return { target: 'admin', ok: true };
-              }).catch(err => {
-                console.error(`⚠️ تعذر إرسال إيميل الإدارة:`, err.message);
-                return { target: 'admin', ok: false, error: err.message };
-              })
-            ];
-
-            // إذا كان بريد العميل مدخلاً وصحيحاً، يتم إرسال رسالة الشكر والتسويق له
-            if (order.customer_email && order.customer_email.includes('@')) {
-              emailTasks.push(
-                transporter.sendMail(customerMailOptions).then(() => {
-                  console.log(`💌 تم إرسال رسالة الشكر والتأكيد التسويقية لبريد العميل: ${order.customer_email}`);
-                  return { target: 'customer', ok: true };
-                }).catch(err => {
-                  console.error(`⚠️ تعذر إرسال إيميل العميل (${order.customer_email}):`, err.message);
-                  return { target: 'customer', ok: false, error: err.message };
-                })
-              );
-            }
-
-            const emailResults = await Promise.all(emailTasks);
-            const adminSent = emailResults.some(r => r.target === 'admin' && r.ok);
-            const customerSent = emailResults.some(r => r.target === 'customer' && r.ok);
-
-            updateOrderStatus(orderId, adminSent ? 'email_sent' : 'saved_locally', {
-              adminEmail: adminSent,
-              customerEmail: customerSent
-            });
-          } catch (bgErr) {
-            console.error('⚠️ خطأ في معالجة إرسال البريد في الخلفية:', bgErr.message);
+            await transporter.sendMail(adminMailOptions);
+            adminSent = true;
+            console.log(`📧 تم إرسال إشعار الطلب لإدارة المتجر: shirtclothes5@gmail.com`);
+          } catch (adminErr) {
+            console.error(`⚠️ تعذر إرسال إيميل الإدارة:`, adminErr.message);
           }
+
+          // فاصل زمني ثانية واحدة لتفريغ اتصال Gmail ومنع تداخل المقابس
+          await new Promise(r => setTimeout(r, 1200));
+
+          // ثانياً: إرسال بريد العميل التسويقي والتأكيدي
+          const customerEmail = (order.customer_email || '').trim();
+          if (customerEmail && customerEmail.includes('@')) {
+            try {
+              customerMailOptions.to = customerEmail;
+              await transporter.sendMail(customerMailOptions);
+              customerSent = true;
+              console.log(`💌 تم إرسال رسالة الشكر والتأكيد التسويقية لبريد العميل: ${customerEmail}`);
+            } catch (custErr) {
+              console.error(`⚠️ تعذر إرسال إيميل العميل (${customerEmail}):`, custErr.message, custErr.code || '');
+            }
+          }
+
+          updateOrderStatus(orderId, adminSent ? 'email_sent' : 'saved_locally', {
+            adminEmail: adminSent,
+            customerEmail: customerSent
+          });
         })();
 
       } catch (err) {
