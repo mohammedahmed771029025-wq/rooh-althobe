@@ -456,26 +456,26 @@
         </div>
       </div>
 
-      <form class="order-form" id="orderForm" onsubmit="submitOrder(event)">
+      <form class="order-form" id="orderForm" novalidate onsubmit="submitOrder(event)">
         <div class="form-group">
           <label for="full-name">الاسم الكامل</label>
           <div class="input-wrapper">
             <span class="input-icon">👤</span>
-            <input type="text" id="full-name" placeholder="أدخل اسمك الكامل" required />
+            <input type="text" id="full-name" placeholder="أدخل اسمك الكامل" required autocomplete="name" />
           </div>
         </div>
         <div class="form-group">
           <label for="phone-number">رقم الجوال (واتساب)</label>
           <div class="input-wrapper">
             <span class="input-icon">📱</span>
-            <input type="tel" id="phone-number" placeholder="+966 5XX XXX XXXX" required pattern="[+0-9\s\-()]{7,20}" />
+            <input type="tel" id="phone-number" placeholder="+966 5XX XXX XXXX" required inputmode="tel" autocomplete="tel" />
           </div>
         </div>
         <div class="form-group">
           <label for="email-address">البريد الإلكتروني</label>
           <div class="input-wrapper">
             <span class="input-icon">✉️</span>
-            <input type="email" id="email-address" placeholder="example@mail.com" required />
+            <input type="email" id="email-address" placeholder="example@mail.com" required inputmode="email" autocomplete="email" />
           </div>
         </div>
         <div class="form-group">

@@ -459,10 +459,10 @@ function openOrderModal() {
 
   let sizeText = '—';
   if (state.sizeMode === 'custom') {
-    const n = document.getElementById('neck-size').value;
-    const h = document.getElementById('height-size').value;
-    const sh = document.getElementById('shoulder-size').value;
-    const sl = document.getElementById('sleeve-size').value;
+    const n = document.getElementById('neck-size') ? document.getElementById('neck-size').value : '';
+    const h = document.getElementById('height-size') ? document.getElementById('height-size').value : '';
+    const sh = document.getElementById('shoulder-size') ? document.getElementById('shoulder-size').value : '';
+    const sl = document.getElementById('sleeve-size') ? document.getElementById('sleeve-size').value : '';
     sizeText = `رقبة ${n || '—'}سم | طول ${h || '—'}سم | كتف ${sh || '—'}سم | أكمام ${sl || '—'}سم`;
   } else {
     sizeText = state.selectedSize || '—';
@@ -472,6 +472,10 @@ function openOrderModal() {
   const overlay = document.getElementById('orderModal');
   overlay.classList.add('open');
   document.body.style.overflow = 'hidden';
+  
+  // إعادة تمرير القالب لأعلى لضمان رؤية البيانات كاملة على الجوال
+  const modalCard = overlay.querySelector('.modal-card');
+  if (modalCard) modalCard.scrollTop = 0;
 }
 
 function closeOrderModal() {
@@ -494,16 +498,53 @@ document.addEventListener('keydown', (e) => {
    FORM SUBMISSION (Direct Backend API -> Gmail)
 ============================================================ */
 async function submitOrder(event) {
-  event.preventDefault();
+  if (event) event.preventDefault();
   const btn = document.getElementById('confirm-btn');
+  if (!btn || btn.disabled) return;
+
+  // مراجع حقول البيانات
+  const nameEl = document.getElementById('full-name');
+  const phoneEl = document.getElementById('phone-number');
+  const emailEl = document.getElementById('email-address');
+  const notesEl = document.getElementById('notes');
+
+  const customerName = (nameEl ? nameEl.value : '').trim();
+  let customerPhone = (phoneEl ? phoneEl.value : '').trim();
+  const customerEmail = (emailEl ? emailEl.value : '').trim();
+  const notes = notesEl ? notesEl.value.trim() : '';
+
+  // تحويل الأرقام العربية المشرقية (٠١٢٣٤٥٦٧٨٩) إلى أرقام إنجليزية
+  customerPhone = customerPhone.replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d))
+                               .replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d));
+
+  // التحقق المباشر من الحقول مع إظهار رسائل واضحة للعميل على الجوال
+  if (!customerName) {
+    showToast('يرجى كتابة الاسم', 'الاسم مطلوب لإتمام الطلب وتأكيد الحجز', true);
+    if (nameEl) nameEl.focus();
+    return;
+  }
+
+  const cleanPhone = customerPhone.replace(/[^0-9+]/g, '');
+  if (!cleanPhone || cleanPhone.length < 8) {
+    showToast('رقم الجوال غير مكتمل', 'يرجى إدخال رقم جوال صحيح للتواصل معك عبر واتساب', true);
+    if (phoneEl) phoneEl.focus();
+    return;
+  }
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!customerEmail || !emailRegex.test(customerEmail)) {
+    showToast('البريد الإلكتروني غير صحيح', 'يرجى إدخال بريد صالح لاستلام رسالة تأكيد الطلب', true);
+    if (emailEl) emailEl.focus();
+    return;
+  }
 
   // Collect size info
   let sizeText = '—';
   if (state.sizeMode === 'custom') {
-    const n = document.getElementById('neck-size').value;
-    const h = document.getElementById('height-size').value;
-    const sh = document.getElementById('shoulder-size').value;
-    const sl = document.getElementById('sleeve-size').value;
+    const n = document.getElementById('neck-size') ? document.getElementById('neck-size').value : '';
+    const h = document.getElementById('height-size') ? document.getElementById('height-size').value : '';
+    const sh = document.getElementById('shoulder-size') ? document.getElementById('shoulder-size').value : '';
+    const sl = document.getElementById('sleeve-size') ? document.getElementById('sleeve-size').value : '';
     sizeText = `رقبة ${n || '—'}سم | طول ${h || '—'}سم | كتف ${sh || '—'}سم | أكمام ${sl || '—'}سم`;
   } else {
     sizeText = state.selectedSize || '—';
@@ -511,13 +552,13 @@ async function submitOrder(event) {
 
   // Build order payload
   const orderData = {
-    customer_name: document.getElementById('full-name').value,
-    customer_phone: document.getElementById('phone-number').value,
-    customer_email: document.getElementById('email-address').value,
+    customer_name: customerName,
+    customer_phone: customerPhone,
+    customer_email: customerEmail,
     fabric: state.selectedFabricName || '—',
     color: state.selectedColorName || '—',
     size: sizeText,
-    notes: document.getElementById('notes').value || 'لا توجد ملاحظات'
+    notes: notes || 'لا توجد ملاحظات'
   };
 
   // Animate button
@@ -741,7 +782,17 @@ function shadeColor(hex, percent) {
 }
 
 /* ============================================================
-   INIT
+   INIT & MOBILE TOUCH HANDLING
 ============================================================ */
 console.log('%c روح الثوب 🏆', 'color: #B8891B; font-size: 20px; font-weight: bold;');
 console.log('%c أناقة تتجسد في تفاصيلك', 'color: #C69A2B; font-size: 14px;');
+
+// ضمان استجابة زر تأكيد الطلب الفورية عند النقر أو اللمس على الجوال
+const confirmButtonEl = document.getElementById('confirm-btn');
+if (confirmButtonEl) {
+  confirmButtonEl.addEventListener('click', (e) => {
+    if (!confirmButtonEl.disabled) {
+      submitOrder(e);
+    }
+  });
+}
