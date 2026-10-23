@@ -532,7 +532,8 @@ async function submitOrder(event) {
     : 'http://localhost:3000/api/order';
 
   const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 12000);
+  // مهلة كافية (35 ثانية) لمراعاة استيقاظ السيرفرات السحابية المجانية (Cold Start)
+  const timeoutId = setTimeout(() => controller.abort(), 35000);
 
   try {
     const response = await fetch(apiUrl, {
