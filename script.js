@@ -526,14 +526,21 @@ async function submitOrder(event) {
   btn.disabled = true;
   addLoaderStyle();
 
+  // تنبيه العميل بلباقة في حال استغرق السيرفر السحابي بضع ثوانٍ للاستيقاظ
+  const wakingNoticeTimer = setTimeout(() => {
+    if (btn.disabled) {
+      btn.innerHTML = `<span>جارٍ تأكيد الطلب مع السيرفر...</span> <div class="loader-dots"><span></span><span></span><span></span></div>`;
+    }
+  }, 7000);
+
   // تحديد رابط الـ API بذكاء (يعمل سواء فُتح الموقع من السيرفر أو بالنقر المباشر على الملف)
   const apiUrl = (window.location.origin && window.location.origin.startsWith('http'))
     ? '/api/order'
     : 'http://localhost:3000/api/order';
 
   const controller = new AbortController();
-  // مهلة كافية (35 ثانية) لمراعاة استيقاظ السيرفرات السحابية المجانية (Cold Start)
-  const timeoutId = setTimeout(() => controller.abort(), 35000);
+  // ضبط مهلة الانتظار إلى 60 ثانية كاملة لضمان استيعاب وقت استيقاظ السيرفر السحابي
+  const timeoutId = setTimeout(() => controller.abort(), 60000);
 
   try {
     const response = await fetch(apiUrl, {
@@ -546,6 +553,7 @@ async function submitOrder(event) {
     });
 
     clearTimeout(timeoutId);
+    clearTimeout(wakingNoticeTimer);
 
     const result = await response.json();
 
@@ -561,6 +569,7 @@ async function submitOrder(event) {
     }
   } catch (error) {
     clearTimeout(timeoutId);
+    clearTimeout(wakingNoticeTimer);
     console.error('Order Submission Error:', error);
 
     let errorTitle = 'تعذر إرسال الطلب';
@@ -571,7 +580,7 @@ async function submitOrder(event) {
       errorDetail = 'يرجى التحقق من اتصال الشبكة وإعادة المحاولة';
     } else if (error.name === 'AbortError') {
       errorTitle = 'استغرق الطلب وقتاً طويلاً';
-      errorDetail = 'يرجى التحقق من سرعة الإنترنت والمحاولة مرة أخرى';
+      errorDetail = 'السيرفر يستغرق وقتاً للاستيقاظ، يرجى إعادة المحاولة الآن';
     } else if (error.message && (error.message.includes('Failed to fetch') || error.name === 'TypeError')) {
       errorTitle = 'السيرفر غير متصل';
       errorDetail = 'يرجى تشغيل السيرفر أولاً عبر النقر على run.bat';
