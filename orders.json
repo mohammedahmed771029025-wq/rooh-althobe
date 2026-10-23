@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ORD-1792727496524",
+    "created_at": "٢٣‏/١٠‏/٢٠٢٦، ٧:٥١:٣٦ ص",
+    "status": "email_sent",
+    "customer_name": "Mohammed Ahmed",
+    "customer_phone": "+967781778708",
+    "customer_email": "mohammedahmed771029025@gmail.com",
+    "fabric": "سلك كوري فاخر",
+    "color": "أبيض ناصع",
+    "size": "رقبة 42سم | طول 180سم | كتف 52سم | أكمام 66سم",
+    "notes": "لا توجد ملاحظات",
+    "email_error": {
+      "adminEmail": true,
+      "customerEmail": true
+    }
+  },
+  {
+    "id": "ORD-1792727180626",
+    "created_at": "٢٣‏/١٠‏/٢٠٢٦، ٧:٤٦:٢٠ ص",
+    "status": "email_sent",
+    "customer_name": "Mohammed Ahmed",
+    "customer_phone": "+967781778708",
+    "customer_email": "mohammedahmed771029025@gmail.com",
+    "fabric": "قماش صيفي خفيف",
+    "color": "أبيض ناصع",
+    "size": "XL",
+    "notes": "لا توجد ملاحظات",
+    "email_error": {
+      "adminEmail": true,
+      "customerEmail": true
+    }
+  },
+  {
+    "id": "ORD-1792727093017",
+    "created_at": "٢٣‏/١٠‏/٢٠٢٦، ٧:٤٤:٥٣ ص",
+    "status": "email_sent",
+    "customer_name": "عبدالله السعيد",
+    "customer_phone": "0551234567",
+    "customer_email": "shirtclothes5@gmail.com",
+    "fabric": "سلك ياباني أصلي فاخر",
+    "color": "أبيض لؤلؤي",
+    "size": "رقبة ٤١ | طول ٥٨ | كتف ٤٥ | أكمام ٦١",
+    "notes": "يرجى التركيز على حشوة الياقة الخفيفة",
+    "email_error": {
+      "adminEmail": true,
+      "customerEmail": true
+    }
+  },
+  {
+    "id": "ORD-1792726793916",
+    "created_at": "٢٣‏/١٠‏/٢٠٢٦، ٧:٣٩:٥٣ ص",
+    "status": "email_sent",
+    "customer_name": "Mohammed Ahmed",
+    "customer_phone": "+967781778708",
+    "customer_email": "mohammedahmed771029025@gmail.com",
+    "fabric": "قماش صيفي خفيف",
+    "color": "أبيض ناصع",
+    "size": "XL",
+    "notes": "لا توجد ملاحظات"
+  },
+  {
+    "id": "ORD-1792726155014",
+    "created_at": "٢٣‏/١٠‏/٢٠٢٦، ٧:٢٩:١٥ ص",
+    "status": "email_sent",
+    "customer_name": "Mohammed Ahmed",
+    "customer_phone": "+967781778708",
+    "customer_email": "mohammedahmed771029025@gmail.com",
+    "fabric": "سلك كوري فاخر",
+    "color": "أبيض ناصع",
+    "size": "—",
+    "notes": "لاشيء"
+  }
+]

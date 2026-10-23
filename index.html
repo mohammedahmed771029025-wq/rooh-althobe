@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>روح الثوب | ثياب رجالية فاخرة مصممة لك</title>
+  <meta name="description" content="روح الثوب – تفصيل وخياطة ثياب رجالية فاخرة. صمّم ثوبك الخاص من أجود الأقمشة العربية بلمسات عصرية وأناقة طبيعية." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&family=Readex+Pro:wght@200;300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Ambient Luxury Cursor Glow -->
+  <div class="cursor-glow" id="cursorGlow"></div>
+
+  <!-- ===== NAVBAR ===== -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <div class="nav-logo">
+        <span class="logo-icon">◆</span>
+        <div class="logo-text">
+          <span class="logo-main">روح الثوب</span>
+          <span class="logo-sub">للخياطة الفاخرة</span>
+        </div>
+      </div>
+      <ul class="nav-links">
+        <li><a href="#hero" class="nav-link">الرئيسية</a></li>
+        <li><a href="#builder" class="nav-link">صمّم ثوبك</a></li>
+        <li><a href="#about" class="nav-link">عن روح الثوب</a></li>
+        <li><a href="#testimonials" class="nav-link">آراء العملاء</a></li>
+        <li><a href="#contact" class="nav-link">تواصل معنا</a></li>
+      </ul>
+      <a href="#builder" class="nav-cta">ابدأ الآن</a>
+      <button class="hamburger" id="hamburger" aria-label="قائمة التنقل">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <ul>
+      <li><a href="#hero" onclick="closeMobileMenu()">الرئيسية</a></li>
+      <li><a href="#builder" onclick="closeMobileMenu()">صمّم ثوبك</a></li>
+      <li><a href="#about" onclick="closeMobileMenu()">عن روح الثوب</a></li>
+      <li><a href="#testimonials" onclick="closeMobileMenu()">آراء العملاء</a></li>
+      <li><a href="#contact" onclick="closeMobileMenu()">تواصل معنا</a></li>
+    </ul>
+  </div>
+
+  <!-- ===== HERO SECTION ===== -->
+  <section class="hero" id="hero">
+    <div class="hero-bg">
+      <div class="hero-orb hero-orb-1"></div>
+      <div class="hero-orb hero-orb-2"></div>
+      <div class="hero-orb hero-orb-3"></div>
+      <div class="gold-particles" id="particles"></div>
+    </div>
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="badge-dot"></span>
+        الخياطة الراقية منذ ١٩٨٥
+      </div>
+      <h1 class="hero-title">
+        <span class="title-line">أناقة تتجسّد</span>
+        <span class="title-line gold-text">في تفاصيلك</span>
+      </h1>
+      <p class="hero-subtitle">
+        كل ثوب قصة تُروى — نصنع لك ثوبك من أجود الأقمشة العالمية<br />
+        بأيدي حِرفيّين متخصصين، وتصميم يعكس شخصيتك الفريدة
+      </p>
+      <div class="hero-actions">
+        <a href="#builder" class="btn-gold" id="hero-cta">
+          <span>صمّم ثوبك الآن</span>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <a href="#about" class="btn-ghost">
+          <span>تعرّف علينا</span>
+        </a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-item">
+          <span class="stat-number" data-target="3500">٠</span>
+          <span class="stat-label">عميل راضٍ</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-number" data-target="40">٠</span>
+          <span class="stat-label">نوع قماش فاخر</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-number" data-target="38">٠</span>
+          <span class="stat-label">عاماً من الخبرة</span>
+        </div>
+      </div>
+    </div>
+    <div class="hero-visual" id="heroVisual">
+      <div class="hero-card-wrapper">
+        <div class="hero-glass-card" id="heroGlassCard">
+          <div class="hero-thobe-showcase">
+            <img src="images/thobe-charcoal.jpg" alt="ثوب سعودي فاخر" id="heroThobeImg" class="hero-thobe-img" />
+            <div class="thobe-img-overlay"></div>
+            <span class="thobe-img-badge">إطلالة ملكية ٢٠٢٦</span>
+          </div>
+          <div class="fabric-preview-hero">
+            <div class="fabric-grid">
+              <div class="fabric-swatch s1 active" title="قطن ياباني أبيض" onclick="changeHeroThobe('images/thobe-white.jpg', this)"></div>
+              <div class="fabric-swatch s2" title="سلك كوري كريمي" onclick="changeHeroThobe('images/thobe-cream.jpg', this)"></div>
+              <div class="fabric-swatch s3" title="قماش صيفي خفيف" onclick="changeHeroThobe('images/thobe-summer.jpg', this)"></div>
+              <div class="fabric-swatch s4" title="جوخ ملكي رمادي" onclick="changeHeroThobe('images/thobe-charcoal.jpg', this)"></div>
+            </div>
+            <p class="fabric-label">انقر لمعاينة تشكيلة الأثواب الفاخرة</p>
+          </div>
+          <div class="card-badge-row">
+            <span class="mini-badge">✦ تفصيل حصري</span>
+            <span class="mini-badge">✦ أصالة وعصرية</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="scroll-indicator">
+      <div class="scroll-dot"></div>
+      <span>اكتشف المزيد</span>
+    </div>
+  </section>
+
+  <!-- ===== TRUST BADGES ===== -->
+  <section class="trust-strip">
+    <div class="trust-container">
+      <div class="trust-item">
+        <div class="trust-icon">🏆</div>
+        <span>ضمان الجودة الكاملة</span>
+      </div>
+      <div class="trust-separator">◆</div>
+      <div class="trust-item">
+        <div class="trust-icon">✂️</div>
+        <span>خياطة دقيقة يدوية</span>
+      </div>
+      <div class="trust-separator">◆</div>
+      <div class="trust-item">
+        <div class="trust-icon">🚀</div>
+        <span>توصيل سريع وآمن</span>
+      </div>
+      <div class="trust-separator">◆</div>
+      <div class="trust-item">
+        <div class="trust-icon">📐</div>
+        <span>مقاسات مخصصة لك</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 3-STEP BUILDER ===== -->
+  <section class="builder-section" id="builder">
+    <div class="section-header">
+      <div class="section-tag">التجربة الحصرية</div>
+      <h2 class="section-title">صمّم ثوبك في <span class="gold-text">٣ خطوات</span></h2>
+      <p class="section-subtitle">اختر قماشك، لونك، ومقاساتك — ودعنا نكمل الباقي بإتقان</p>
+    </div>
+
+    <!-- Step Progress with Status Meter -->
+    <div class="step-progress-wrapper">
+      <div class="step-progress">
+        <div class="step-item active" id="step-indicator-1" data-step="1" onclick="goToStep(1)">
+          <div class="step-circle">١</div>
+          <span>القماش</span>
+        </div>
+        <div class="step-line" id="line-1-2"></div>
+        <div class="step-item" id="step-indicator-2" data-step="2" onclick="goToStep(2)">
+          <div class="step-circle">٢</div>
+          <span>اللون</span>
+        </div>
+        <div class="step-line" id="line-2-3"></div>
+        <div class="step-item" id="step-indicator-3" data-step="3" onclick="goToStep(3)">
+          <div class="step-circle">٣</div>
+          <span>المقاسات</span>
+        </div>
+      </div>
+      <div class="builder-status-bar">
+        <div class="status-meter-track"><div class="status-meter-fill" id="statusMeterFill" style="width: 33%"></div></div>
+        <div class="status-info">
+          <span class="status-step-title" id="statusStepTitle">الخطوة ١ من ٣: اختر نوع القماش المناسب لك</span>
+          <span class="status-percent" id="statusPercent">٣٣٪ مكتمل</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 1: FABRIC -->
+    <div class="step-panel active" id="step-1">
+      <h3 class="step-title">اختر القماش <span class="step-subtitle-tag">الخطوة الأولى</span></h3>
+      <div class="fabric-grid-main">
+
+        <div class="fabric-card" data-fabric="japanese-cotton" tabindex="0">
+          <div class="fabric-texture fabric-japanese"></div>
+          <div class="fabric-card-body">
+            <div class="fabric-name">قطن ياباني فاخر</div>
+            <div class="fabric-desc">خفيف، ناعم، يسمح بمرور الهواء — مثالي للمناخ الخليجي</div>
+            <div class="fabric-tags">
+              <span class="tag">خفيف الوزن</span>
+              <span class="tag">صيفي</span>
+              <span class="tag">مستدام</span>
+            </div>
+            <div class="fabric-price">من ٢٨٠ ريال</div>
+          </div>
+          <div class="fabric-select-badge">✓ تم الاختيار</div>
+        </div>
+
+        <div class="fabric-card" data-fabric="korean-silk" tabindex="0">
+          <div class="fabric-texture fabric-silk"></div>
+          <div class="fabric-card-body">
+            <div class="fabric-name">سلك كوري فاخر</div>
+            <div class="fabric-desc">لمعة هادئة وملمس حريري ناعم يمنحك أناقة الملوك</div>
+            <div class="fabric-tags">
+              <span class="tag">لامع هادئ</span>
+              <span class="tag">رسمي</span>
+              <span class="tag">فاخر</span>
+            </div>
+            <div class="fabric-price">من ٣٨٠ ريال</div>
+          </div>
+          <div class="fabric-select-badge">✓ تم الاختيار</div>
+        </div>
+
+        <div class="fabric-card" data-fabric="light-summer" tabindex="0">
+          <div class="fabric-texture fabric-summer"></div>
+          <div class="fabric-card-body">
+            <div class="fabric-name">قماش صيفي خفيف</div>
+            <div class="fabric-desc">نسيج شفاف خفيف الوزن لأيام الصيف الطويلة براحة تامة</div>
+            <div class="fabric-tags">
+              <span class="tag">خفيف جداً</span>
+              <span class="tag">مريح</span>
+              <span class="tag">عملي</span>
+            </div>
+            <div class="fabric-price">من ٢٢٠ ريال</div>
+          </div>
+          <div class="fabric-select-badge">✓ تم الاختيار</div>
+        </div>
+
+        <div class="fabric-card" data-fabric="royal-wool" tabindex="0">
+          <div class="fabric-texture fabric-wool"></div>
+          <div class="fabric-card-body">
+            <div class="fabric-name">جوخ ملكي شتوي</div>
+            <div class="fabric-desc">قماش أوروبي ثقيل الوزن، دافئ ومتين، لإطلالة شتوية فخمة</div>
+            <div class="fabric-tags">
+              <span class="tag">شتوي</span>
+              <span class="tag">دافئ</span>
+              <span class="tag">أوروبي</span>
+            </div>
+            <div class="fabric-price">من ٤٨٠ ريال</div>
+          </div>
+          <div class="fabric-select-badge">✓ تم الاختيار</div>
+        </div>
+
+      </div>
+      <div class="step-nav">
+        <button class="btn-gold step-next" id="next-to-2" onclick="nextStep(2)" disabled>
+          <span>التالي: اختر اللون</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- STEP 2: COLOR -->
+    <div class="step-panel" id="step-2">
+      <h3 class="step-title">اختر اللون <span class="step-subtitle-tag">الخطوة الثانية</span></h3>
+      <div class="color-grid">
+
+        <div class="color-card" data-color="off-white" data-color-name="أبيض كسير" tabindex="0">
+          <div class="color-swatch" style="background:linear-gradient(135deg,#FAF7F2,#F0EBE0)"></div>
+          <span class="color-name">أبيض كسير</span>
+          <span class="color-sub">Off White</span>
+        </div>
+
+        <div class="color-card" data-color="bright-white" data-color-name="أبيض ناصع" tabindex="0">
+          <div class="color-swatch" style="background:linear-gradient(135deg,#FFFFFF,#F5F5F5)"></div>
+          <span class="color-name">أبيض ناصع</span>
+          <span class="color-sub">Bright White</span>
+        </div>
+
+        <div class="color-card" data-color="cream" data-color-name="كريمي" tabindex="0">
+          <div class="color-swatch" style="background:linear-gradient(135deg,#FFFDD0,#F5EEC8)"></div>
+          <span class="color-name">كريمي</span>
+          <span class="color-sub">Cream</span>
+        </div>
+
+        <div class="color-card" data-color="soft-gold" data-color-name="ذهبي فاتح" tabindex="0">
+          <div class="color-swatch" style="background:linear-gradient(135deg,#F3E5AB,#D4AF37)"></div>
+          <span class="color-name">ذهبي فاتح</span>
+          <span class="color-sub">Soft Gold</span>
+        </div>
+
+        <div class="color-card" data-color="charcoal" data-color-name="رمادي فحمي" tabindex="0">
+          <div class="color-swatch" style="background:linear-gradient(135deg,#555,#333)"></div>
+          <span class="color-name">رمادي فحمي</span>
+          <span class="color-sub">Charcoal Gray</span>
+        </div>
+
+        <div class="color-card" data-color="light-blue" data-color-name="أزرق فاتح" tabindex="0">
+          <div class="color-swatch" style="background:linear-gradient(135deg,#B8D8F8,#8BBDE6)"></div>
+          <span class="color-name">أزرق فاتح</span>
+          <span class="color-sub">Light Blue</span>
+        </div>
+
+      </div>
+      <div class="step-nav">
+        <button class="btn-outline" onclick="prevStep(1)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          <span>السابق</span>
+        </button>
+        <button class="btn-gold step-next" id="next-to-3" onclick="nextStep(3)" disabled>
+          <span>التالي: المقاسات والتفاصيل</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- STEP 3: SIZE -->
+    <div class="step-panel" id="step-3">
+      <h3 class="step-title">المقاسات والتفاصيل <span class="step-subtitle-tag">الخطوة الثالثة</span></h3>
+
+      <div class="size-toggle-wrapper">
+        <div class="size-toggle">
+          <button class="toggle-btn active" id="toggle-standard" onclick="switchSizeMode('standard')">مقاسات قياسية</button>
+          <button class="toggle-btn" id="toggle-custom" onclick="switchSizeMode('custom')">مقاسات مخصصة</button>
+        </div>
+      </div>
+
+      <!-- Standard Sizes -->
+      <div class="size-panel active" id="standard-sizes">
+        <div class="size-grid">
+          <div class="size-btn" data-size="S" onclick="selectSize(this)">S<span>صغير</span></div>
+          <div class="size-btn" data-size="M" onclick="selectSize(this)">M<span>وسط</span></div>
+          <div class="size-btn" data-size="L" onclick="selectSize(this)">L<span>كبير</span></div>
+          <div class="size-btn" data-size="XL" onclick="selectSize(this)">XL<span>كبير جداً</span></div>
+          <div class="size-btn" data-size="XXL" onclick="selectSize(this)">XXL<span>ضخم</span></div>
+        </div>
+      </div>
+
+      <!-- Custom Measurements -->
+      <div class="size-panel" id="custom-sizes">
+        <div class="custom-fields">
+          <div class="field-group">
+            <label for="neck-size">
+              <span class="field-icon">👕</span>
+              مقاس الرقبة (سم)
+              <span class="tooltip" title="القياس حول قاعدة الرقبة بشكل مريح">ⓘ</span>
+            </label>
+            <input type="number" id="neck-size" placeholder="٣٨" min="30" max="60" class="measure-input" />
+          </div>
+          <div class="field-group">
+            <label for="height-size">
+              <span class="field-icon">📏</span>
+              الطول الكامل (سم)
+              <span class="tooltip" title="الطول من الكتف حتى الكعب">ⓘ</span>
+            </label>
+            <input type="number" id="height-size" placeholder="١٥٠" min="140" max="210" class="measure-input" />
+          </div>
+          <div class="field-group">
+            <label for="shoulder-size">
+              <span class="field-icon">🔄</span>
+              عرض الكتف (سم)
+              <span class="tooltip" title="القياس من نهاية الكتف الأيمن حتى نهاية الكتف الأيسر">ⓘ</span>
+            </label>
+            <input type="number" id="shoulder-size" placeholder="٤٨" min="35" max="70" class="measure-input" />
+          </div>
+          <div class="field-group">
+            <label for="sleeve-size">
+              <span class="field-icon">✂️</span>
+              طول الأكمام (سم)
+              <span class="tooltip" title="القياس من نهاية الكتف حتى الرسغ">ⓘ</span>
+            </label>
+            <input type="number" id="sleeve-size" placeholder="٦٣" min="45" max="90" class="measure-input" />
+          </div>
+        </div>
+        <div class="quick-preset-bar">
+          <span class="preset-label">⚡ قياسات شائعة سريعة:</span>
+          <button type="button" class="preset-pill" onclick="applyPresetSize(38, 160, 46, 60)">طول ١٦٠ سم</button>
+          <button type="button" class="preset-pill" onclick="applyPresetSize(40, 170, 48, 63)">طول ١٧٠ سم</button>
+          <button type="button" class="preset-pill" onclick="applyPresetSize(42, 180, 52, 66)">طول ١٨٠ سم</button>
+        </div>
+        <div class="measurement-tip">
+          <div class="tip-icon">💡</div>
+          <p>تحتاج مساعدة في القياس الدقيق؟ <a href="https://wa.me/966500000000" target="_blank" class="gold-link">تواصل معنا مباشرة عبر واتساب</a> وسيرشدك خبراؤنا خطوة بخطوة</p>
+        </div>
+      </div>
+
+      <!-- Summary Preview -->
+      <div class="order-preview glass-card">
+        <div class="preview-header-row">
+          <h4>ملخص تفصيل ثوبك الخاص</h4>
+          <span class="preview-badge" id="previewBadge">قيد الاختيار (٣٣٪)</span>
+        </div>
+        <div class="preview-rows">
+          <div class="preview-row">
+            <span class="preview-label">🧵 القماش المختار:</span>
+            <span class="preview-value" id="preview-fabric">لم يتم الاختيار</span>
+          </div>
+          <div class="preview-row">
+            <span class="preview-label">🎨 اللون المختار:</span>
+            <span class="preview-value" id="preview-color">لم يتم الاختيار</span>
+          </div>
+          <div class="preview-row">
+            <span class="preview-label">📏 المقاس:</span>
+            <span class="preview-value" id="preview-size">لم يتم الاختيار</span>
+          </div>
+          <div class="preview-row">
+            <span class="preview-label">⏱️ مدة الخياطة المتوقعة:</span>
+            <span class="preview-value gold-text">٣ - ٥ أيام عمل</span>
+          </div>
+          <div class="preview-row">
+            <span class="preview-label">🚚 التوصيل والتغليف:</span>
+            <span class="preview-value delivery-tag">مجاني وفاخر حتى باب منزلك</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="step-nav">
+        <button class="btn-outline" onclick="prevStep(2)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          <span>السابق</span>
+        </button>
+        <button class="btn-gold" id="proceed-to-order" onclick="openOrderModal()">
+          <span>متابعة لتأكيد الطلب</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ORDER MODAL ===== -->
+  <div class="modal-overlay" id="orderModal">
+    <div class="modal-card glass-card" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <button class="modal-close" onclick="closeOrderModal()" aria-label="إغلاق">✕</button>
+      <div class="modal-header">
+        <div class="modal-icon">◆</div>
+        <h3 id="modal-title">بيانات الطلب</h3>
+        <p>يُرجى تعبئة بياناتك لإتمام الطلب</p>
+      </div>
+
+      <div class="modal-summary">
+        <h4>ملخص طلبك</h4>
+        <div class="modal-summary-rows">
+          <div class="modal-summary-row">
+            <span>القماش</span>
+            <span class="gold-text" id="modal-fabric">—</span>
+          </div>
+          <div class="modal-summary-row">
+            <span>اللون</span>
+            <span class="gold-text" id="modal-color">—</span>
+          </div>
+          <div class="modal-summary-row">
+            <span>المقاس</span>
+            <span class="gold-text" id="modal-size">—</span>
+          </div>
+        </div>
+      </div>
+
+      <form class="order-form" id="orderForm" onsubmit="submitOrder(event)">
+        <div class="form-group">
+          <label for="full-name">الاسم الكامل</label>
+          <div class="input-wrapper">
+            <span class="input-icon">👤</span>
+            <input type="text" id="full-name" placeholder="أدخل اسمك الكامل" required />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="phone-number">رقم الجوال (واتساب)</label>
+          <div class="input-wrapper">
+            <span class="input-icon">📱</span>
+            <input type="tel" id="phone-number" placeholder="+966 5XX XXX XXXX" required pattern="[+0-9\s\-()]{7,20}" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="email-address">البريد الإلكتروني</label>
+          <div class="input-wrapper">
+            <span class="input-icon">✉️</span>
+            <input type="email" id="email-address" placeholder="example@mail.com" required />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="notes">ملاحظات إضافية (اختياري)</label>
+          <div class="input-wrapper">
+            <span class="input-icon">📝</span>
+            <textarea id="notes" placeholder="أي تفاصيل إضافية تودّ إضافتها..." rows="3"></textarea>
+          </div>
+        </div>
+        <button type="submit" class="btn-gold btn-full" id="confirm-btn">
+          <span>تأكيد الطلب والإرسال</span>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2L15 22 11 13 2 9l20-7z"/></svg>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- SUCCESS TOAST -->
+  <div class="success-toast" id="successToast">
+    <div class="toast-icon">✓</div>
+    <div class="toast-text">
+      <strong>تم إرسال طلبك بنجاح!</strong>
+      <span>سيتواصل معك فريقنا خلال ٢٤ ساعة</span>
+    </div>
+  </div>
+
+  <!-- ===== ABOUT / BRAND VISION ===== -->
+  <section class="about-section" id="about">
+    <div class="section-header">
+      <div class="section-tag">رؤيتنا وهويتنا</div>
+      <h2 class="section-title">عن <span class="gold-text">روح الثوب</span></h2>
+    </div>
+    <div class="about-grid">
+      <div class="about-main-card glass-card">
+        <div class="about-icon-large">◆</div>
+        <h3>دمج الأصالة العربية بالتصميم العصري الأنيق</h3>
+        <p>
+          في روح الثوب، نؤمن بأن الثوب ليس مجرد قطعة ملابس — بل هو تعبير عن هويتك وشخصيتك وأصالتك.
+          منذ عام ١٩٨٥، ونحن نجمع بين الحرفية اليدوية التقليدية والرؤية التصميمية المعاصرة
+          لنقدم لك ثوباً يليق بمقامك في كل مناسبة.
+        </p>
+        <p>
+          كل خيط يُحاك بعناية فائقة، وكل قطعة قماش تُنتقى من أندر وأجود المناسج العالمية لتمنحك إحساساً طبيعياً بالراحة والفخامة التي تدوم.
+        </p>
+        <div class="about-features">
+          <div class="feature-item">
+            <span class="feature-check">✦</span>
+            <span>خبراء خياطة معتمدون بأكثر من ٣٨ عاماً من الإتقان</span>
+          </div>
+          <div class="feature-item">
+            <span class="feature-check">✦</span>
+            <span>أقمشة طبيعية مستوردة من كبرى المناسج في اليابان، كوريا، وأوروبا</span>
+          </div>
+          <div class="feature-item">
+            <span class="feature-check">✦</span>
+            <span>تفصيل شخصي دقيق يراعي أدق معايير الراحة والأناقة</span>
+          </div>
+          <div class="feature-item">
+            <span class="feature-check">✦</span>
+            <span>ضمان الجودة الشامل على جميع أعمال التفصيل والخياطة</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="about-media-col">
+        <div class="about-image-card glass-card">
+          <div class="about-img-wrapper">
+            <img src="images/thobe-white.jpg" alt="ثوب سعودي فاخر - روح الثوب" class="about-img" loading="lazy" />
+            <div class="about-img-overlay"></div>
+            <div class="about-img-badge">
+              <span class="badge-gold-spark">✦</span>
+              <span>تفصيل سعودي ملكي</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="about-stats-row">
+          <div class="about-stat-card glass-card">
+            <div class="stat-big-number gold-text">٣٨+</div>
+            <div class="stat-big-label">عاماً من الخبرة</div>
+          </div>
+          <div class="about-stat-card glass-card">
+            <div class="stat-big-number gold-text">٣٥٠٠+</div>
+            <div class="stat-big-label">عميل سعيد</div>
+          </div>
+          <div class="about-stat-card glass-card">
+            <div class="stat-big-number gold-text">٤٠+</div>
+            <div class="stat-big-label">نوع قماش فاخر</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TESTIMONIALS ===== -->
+  <section class="testimonials-section" id="testimonials">
+    <div class="section-header">
+      <div class="section-tag">آراء عملائنا</div>
+      <h2 class="section-title">ماذا يقول <span class="gold-text">عملاؤنا</span></h2>
+      <p class="section-subtitle">كلماتهم خير شاهد على جودة عملنا وإتقاننا</p>
+    </div>
+    <div class="testimonials-grid">
+
+      <div class="testimonial-card glass-card">
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-text">"لم أتوقع أن يكون الثوب بهذا المستوى من الجودة والأناقة. ملمس القماش رائع والخياطة دقيقة جداً. سأعود بالتأكيد!"</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">خ</div>
+          <div class="author-info">
+            <span class="author-name">خالد المطيري</span>
+            <span class="author-city">الرياض</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial-card glass-card featured">
+        <div class="featured-badge">الأكثر تقييماً</div>
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-text">"خدمة استثنائية من أول لحظة في روح الثوب. ساعدوني في اختيار القماش المناسب وأرشدوني للمقاسات الصحيحة. الثوب جاء بالضبط كما طلبت وفي الوقت المحدد."</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">ع</div>
+          <div class="author-info">
+            <span class="author-name">عبدالرحمن الحربي</span>
+            <span class="author-city">جدة</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial-card glass-card">
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-text">"اشتريت ثلاثة أثواب بأقمشة مختلفة وكلها ممتازة. السلك الكوري جميل جداً وناعم. التوصيل كان سريعاً والتغليف فاخر."</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">م</div>
+          <div class="author-info">
+            <span class="author-name">محمد الغامدي</span>
+            <span class="author-city">الدمام</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer" id="contact">
+    <div class="footer-glow"></div>
+    <div class="footer-container">
+      <div class="footer-grid">
+
+        <div class="footer-brand">
+          <div class="footer-logo">
+            <span class="logo-icon">◆</span>
+            <div class="logo-text">
+              <span class="logo-main">روح الثوب</span>
+              <span class="logo-sub">للخياطة الفاخرة</span>
+            </div>
+          </div>
+          <p class="footer-tagline">أناقة تتجسّد في تفاصيلك — منذ ١٩٨٥</p>
+          <div class="social-links">
+            <a href="https://wa.me/966500000000" target="_blank" class="social-btn whatsapp" aria-label="واتساب">
+              <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            </a>
+            <a href="https://instagram.com" target="_blank" class="social-btn instagram" aria-label="انستغرام">
+              <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            </a>
+            <a href="https://twitter.com" target="_blank" class="social-btn twitter" aria-label="تويتر">
+              <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.259 5.63zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            </a>
+            <a href="https://snapchat.com" target="_blank" class="social-btn snapchat" aria-label="سناب شات">
+              <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M12.166.006C10.016.006 5.898.585 4.068 4.947c-.46 1.073-.35 2.897-.297 4.025l-.017.003c-.218.03-.465-.011-.726-.11a1.44 1.44 0 00-.553-.115c-.512 0-.892.281-.892.664 0 .557.545.756 1.006.902.075.023.152.047.226.074.424.151.7.436.717.622.006.055-.008.114-.044.175-.46.79-1.58 2.102-3.43 2.416a.363.363 0 00-.306.356c0 .17.115.324.296.388.11.039.22.074.334.109.99.305 1.472.727 1.545 1.348.017.145.114.27.254.325.24.093.654.164 1.353.164.504 0 1.048-.04 1.543-.104.698.945 1.997 1.583 3.585 1.783.11.014.182.104.168.213-.018.132-.117.242-.247.28-.498.143-1.146.264-1.78.264-.256 0-.473-.022-.671-.066-.296-.065-.627-.066-.91.076a.895.895 0 00-.515.643c-.057.35.137.668.5.769.756.208 1.57.316 2.42.316 1.13 0 2.198-.228 3.1-.659.901.43 1.97.659 3.1.659.85 0 1.664-.108 2.42-.316.362-.1.557-.419.5-.769a.895.895 0 00-.515-.643c-.283-.142-.614-.14-.91-.076a3.108 3.108 0 01-.671.066c-.634 0-1.282-.121-1.78-.264a.317.317 0 01-.247-.28c-.014-.109.058-.199.168-.213 1.588-.2 2.887-.838 3.585-1.783.495.064 1.04.104 1.543.104.699 0 1.113-.07 1.353-.164.14-.055.237-.18.254-.325.073-.621.555-1.043 1.545-1.348.114-.035.224-.07.334-.109a.403.403 0 00.296-.388.363.363 0 00-.306-.356c-1.85-.314-2.97-1.626-3.43-2.416a.316.316 0 01-.044-.175c.017-.186.293-.471.717-.622.074-.027.151-.051.226-.074.461-.146 1.006-.345 1.006-.902 0-.383-.38-.664-.892-.664-.199 0-.39.042-.553.115-.261.099-.508.14-.726.11l-.017-.003c.053-1.128.163-2.952-.297-4.025C18.103.585 13.985.006 12.166.006z"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4 class="footer-col-title">روابط سريعة</h4>
+          <ul class="footer-links">
+            <li><a href="#hero">الرئيسية</a></li>
+            <li><a href="#builder">صمّم ثوبك</a></li>
+            <li><a href="#about">عن روح الثوب</a></li>
+            <li><a href="#testimonials">آراء العملاء</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4 class="footer-col-title">خدماتنا</h4>
+          <ul class="footer-links">
+            <li><a href="#">تفصيل الأثواب</a></li>
+            <li><a href="#">أقمشة فاخرة</a></li>
+            <li><a href="#">خياطة مخصصة</a></li>
+            <li><a href="#">توصيل للمنزل</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4 class="footer-col-title">تواصل معنا</h4>
+          <ul class="footer-contact">
+            <li>
+              <span class="contact-icon">📍</span>
+              <span>الرياض، حي العليا<br/>شارع التحلية</span>
+            </li>
+            <li>
+              <span class="contact-icon">📞</span>
+              <a href="tel:+966500000000">+966 500 000 000</a>
+            </li>
+            <li>
+              <span class="contact-icon">📧</span>
+              <a href="mailto:info@rooh-althobe.com">info@rooh-althobe.com</a>
+            </li>
+            <li>
+              <span class="contact-icon">🕐</span>
+              <span>السبت – الخميس<br/>٩ص – ١٠م</span>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div class="footer-bottom">
+        <div class="footer-divider"></div>
+        <div class="footer-bottom-row">
+          <p class="footer-copy">© ٢٠٢٦ روح الثوب للخياطة الفاخرة. جميع الحقوق محفوظة.</p>
+          <div class="footer-bottom-links">
+            <a href="#">سياسة الخصوصية</a>
+            <span>|</span>
+            <a href="#">شروط الخدمة</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
