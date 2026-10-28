@@ -4,9 +4,17 @@ const path = require('path');
 const nodemailer = require('nodemailer');
 
 const PORT = process.env.PORT || 3000;
-const EMAIL_USER = process.env.EMAIL_USER || 'shirtclothes5@gmail.com';
-const EMAIL_PASS = process.env.EMAIL_PASS || 'riwuoadcclkgctrc';
 const ORDERS_FILE = path.join(__dirname, 'orders.json');
+
+// إعدادات البريد - يدعم Resend API (الأكثر ضماناً على Render) / Brevo SMTP / Gmail محلياً
+const RESEND_API_KEY = process.env.RESEND_API_KEY;
+const USE_RESEND = !!RESEND_API_KEY;
+const USE_BREVO = !USE_RESEND && !!(process.env.BREVO_SMTP_USER && process.env.BREVO_SMTP_KEY);
+const EMAIL_USER = process.env.EMAIL_USER || process.env.BREVO_SMTP_USER || 'shirtclothes5@gmail.com';
+const EMAIL_PASS = process.env.EMAIL_PASS || process.env.BREVO_SMTP_KEY || 'riwuoadcclkgctrc';
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'shirtclothes5@gmail.com';
+const SENDER_EMAIL = process.env.RESEND_SENDER_EMAIL || process.env.BREVO_SENDER_EMAIL || 'onboarding@resend.dev';
+const SENDER_NAME = process.env.SENDER_NAME || 'روح الثوب للخياطة الفاخرة';
 
 // حفظ الطلب محلياً في ملف JSON لضمان عدم ضياع أي طلب إطلاقاً
 function saveOrderLocally(orderData) {
@@ -52,23 +60,133 @@ function updateOrderStatus(orderId, status, errorInfo = null) {
   }
 }
 
-// إعداد خدمة البريد عبر Gmail
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: EMAIL_USER,
-    pass: EMAIL_PASS // App Password الخاص بحسابك
-  }
-});
+// إعداد خدمة البريد
+let transporter = null;
 
-// التحقق من صحة الاتصال بـ Gmail عند بدء التشغيل
-transporter.verify((error, success) => {
-  if (error) {
-    console.error('❌ تنبيه: خطأ في الاتصال بحساب Gmail:', error.message);
-  } else {
-    console.log('✅ تم الاتصال بحساب Gmail بنجاح! جاهز لاستقبال الطلبات.');
+async function sendEmail(options) {
+  // أولوية 1: Resend API
+  if (USE_RESEND && RESEND_API_KEY) {
+    try {
+      const response = await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${RESEND_API_KEY}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          from: options.from || `${SENDER_NAME} <${SENDER_EMAIL}>`,
+          to: Array.isArray(options.to) ? options.to : [options.to],
+          reply_to: options.replyTo || options.reply_to,
+          subject: options.subject,
+          text: options.text,
+          html: options.html
+        })
+      });
+
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) {
+        throw new Error(data.message || `Resend API error: ${response.status}`);
+      }
+      return { success: true, provider: 'resend', id: data.id };
+    } catch (err) {
+      console.error('⚠️ فشل الإرسال عبر Resend API:', err.message);
+      throw err;
+    }
   }
-});
+
+  // أولوية 2: Brevo SMTP
+  if (USE_BREVO) {
+    if (!transporter) {
+      transporter = nodemailer.createTransport({
+        host: 'smtp-relay.brevo.com',
+        port: 587,
+        secure: false,
+        requireTLS: true,
+        auth: {
+          user: process.env.BREVO_SMTP_USER,
+          pass: process.env.BREVO_SMTP_KEY
+        },
+        connectionTimeout: 10000,
+        greetingTimeout: 10000,
+        socketTimeout: 10000,
+        tls: {
+          rejectUnauthorized: true
+        }
+      });
+    }
+    const info = await transporter.sendMail(options);
+    return { success: true, provider: 'brevo', info };
+  }
+
+  // أولوية 3: Gmail SMTP (محلياً فقط)
+  if (!transporter) {
+    transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: EMAIL_USER,
+        pass: EMAIL_PASS
+      },
+      connectionTimeout: 10000,
+      greetingTimeout: 10000,
+      socketTimeout: 10000
+    });
+  }
+  const info = await transporter.sendMail(options);
+  return { success: true, provider: 'gmail', info };
+}
+
+// طباعة وضع البريد عند بدء التشغيل
+if (USE_RESEND) {
+  console.log(`📧 وضع البريد: Resend API (مُفعّل) | المرسل: ${SENDER_NAME} <${SENDER_EMAIL}>`);
+} else if (USE_BREVO) {
+  console.log('📧 وضع البريد: Brevo SMTP (مُفعّل)');
+} else {
+  console.log('📧 وضع البريد: Gmail SMTP (محلياً)');
+}
+
+// التحقق من صحة الاتصال بالبريد عند بدء التشغيل
+if (USE_BREVO && !USE_RESEND) {
+  transporter = transporter || nodemailer.createTransport({
+    host: 'smtp-relay.brevo.com',
+    port: 587,
+    secure: false,
+    requireTLS: true,
+    auth: {
+      user: process.env.BREVO_SMTP_USER,
+      pass: process.env.BREVO_SMTP_KEY
+    },
+    connectionTimeout: 10000,
+    greetingTimeout: 10000,
+    socketTimeout: 10000
+  });
+  transporter.verify((error) => {
+    if (error) {
+      console.error('❌ تنبيه: خطأ في الاتصال بخدمة البريد:', error.message);
+    } else {
+      console.log('✅ تم الاتصال بخدمة البريد بنجاح! جاهز لاستقبال الطلبات.');
+    }
+  });
+} else if (!USE_RESEND && !USE_BREVO) {
+  transporter = transporter || nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: EMAIL_USER,
+      pass: EMAIL_PASS
+    },
+    connectionTimeout: 10000,
+    greetingTimeout: 10000,
+    socketTimeout: 10000
+  });
+  transporter.verify((error) => {
+    if (error) {
+      console.error('❌ تنبيه: خطأ في الاتصال بخدمة البريد:', error.message);
+    } else {
+      console.log('✅ تم الاتصال بخدمة البريد بنجاح! جاهز لاستقبال الطلبات.');
+    }
+  });
+} else {
+  console.log('✅ وضع Resend API جاهز، لن يتم التحقق من SMTP بشكل مباشر.');
+}
 
 // أنواع الملفات المدعومة
 const mimeTypes = {
@@ -330,11 +448,18 @@ const server = http.createServer((req, res) => {
         </html>
         `;
 
-        // خيارات بريد إدارة المتجر
+        // خيارات بريد إدارة المتجر والعميل
+        const fromAddress = USE_RESEND 
+          ? `${SENDER_NAME} <${SENDER_EMAIL}>`
+          : USE_BREVO 
+            ? `${SENDER_NAME} <${process.env.BREVO_SENDER_EMAIL || SENDER_EMAIL}>`
+            : `"روح الثوب" <${EMAIL_USER}>`;
+        const replyAddress = order.customer_email || (USE_RESEND ? SENDER_EMAIL : EMAIL_USER);
+
         const adminMailOptions = {
-          from: `"روح الثوب" <shirtclothes5@gmail.com>`,
-          to: 'shirtclothes5@gmail.com',
-          replyTo: order.customer_email || 'shirtclothes5@gmail.com',
+          from: fromAddress,
+          to: ADMIN_EMAIL,
+          replyTo: replyAddress,
           subject: `🛒 طلب ثوب جديد [${orderId}] من العميل: ${order.customer_name || 'عميل روح الثوب'}`,
           text: `طلب جديد برقم: ${orderId}\nالعميل: ${order.customer_name}\nرقم الجوال: ${order.customer_phone}\nالقماش: ${order.fabric}\nاللون: ${order.color}\nالمقاس: ${order.size}\nالملاحظات: ${order.notes}`,
           html: htmlContent
@@ -342,11 +467,11 @@ const server = http.createServer((req, res) => {
 
         // خيارات بريد العميل التسويقي
         const customerMailOptions = {
-          from: `"روح الثوب للخياطة الفاخرة" <shirtclothes5@gmail.com>`,
+          from: fromAddress,
           to: order.customer_email,
-          replyTo: 'shirtclothes5@gmail.com',
+          replyTo: (USE_RESEND ? SENDER_EMAIL : EMAIL_USER),
           subject: `✨ تم استلام طلبك بنجاح [${orderId}] | شكراً لاختيارك روح الثوب`,
-          text: `أهلاً وسهلاً بك يا ${order.customer_name}\n\nنشكرك من القلب على اختيارك لمتجر روح الثوب للخياطة الفاخرة.\nتم استلام طلبك رقم [${orderId}] بنجاح وهو الآن قيد التجهيز.\n\nتفاصيل الطلب:\nالقماش: ${order.fabric}\nاللون: ${order.color}\nالمقاس: ${order.size}\n\nكود هدية ترحيبية لطلبك القادم: ROOH10\n\nمع تحيات فريق روح الثوب للخياطة الفاخرة.`,
+          text: `أهلاً وسهلاً بك يا ${order.customer_name}\n\nنشكرك من القلب على اختيارك لمتجر روح الثوب للخياطة الفاخرة.\nتم استلام طلبك رقم [${orderId}] بنجاح وهو الآن قيد التجهيز.\n\nتفاصيل الطلب:\nالقماش: ${order.fabric}\nاللون: ${order.color}\nالمقاس: ${order.size}\n\nكود hية ترحيبية لطلبك القادم: ROOH10\n\nمع تحيات فريق روح الثوب للخياطة الفاخرة.`,
           html: customerMarketingHtml
         };
 
@@ -365,26 +490,26 @@ const server = http.createServer((req, res) => {
 
           // أولاً: إرسال بريد إدارة المتجر
           try {
-            await transporter.sendMail(adminMailOptions);
+            await sendEmail(adminMailOptions);
             adminSent = true;
-            console.log(`📧 تم إرسال إشعار الطلب لإدارة المتجر: shirtclothes5@gmail.com`);
+            console.log(`📧 تم إرسال إشعار الطلب لإدارة المتجر: ${ADMIN_EMAIL} [${USE_RESEND ? 'Resend' : USE_BREVO ? 'Brevo' : 'Gmail'}]`);
           } catch (adminErr) {
             console.error(`⚠️ تعذر إرسال إيميل الإدارة:`, adminErr.message);
           }
 
-          // فاصل زمني ثانية واحدة لتفريغ اتصال Gmail ومنع تداخل المقابس
-          await new Promise(r => setTimeout(r, 1200));
+          // فاصل زمني بسيط لتفادي أي تداخل
+          await new Promise(r => setTimeout(r, 800));
 
           // ثانياً: إرسال بريد العميل التسويقي والتأكيدي
           const customerEmail = (order.customer_email || '').trim();
           if (customerEmail && customerEmail.includes('@')) {
             try {
               customerMailOptions.to = customerEmail;
-              await transporter.sendMail(customerMailOptions);
+              await sendEmail(customerMailOptions);
               customerSent = true;
-              console.log(`💌 تم إرسال رسالة الشكر والتأكيد التسويقية لبريد العميل: ${customerEmail}`);
+              console.log(`💌 تم إرسال رسالة الشكر والتأكيد التسويقية لبريد العميل: ${customerEmail} [${USE_RESEND ? 'Resresend' : USE_BREVO ? 'Brevo' : 'Gmail'}]`);
             } catch (custErr) {
-              console.error(`⚠️ تعذر إرسال إيميل العميل (${customerEmail}):`, custErr.message, custErr.code || '');
+              console.error(`⚠️ تعذر إرسال إيميل العميل (${customerEmail}):`, custErr.message);
             }
           }
 
